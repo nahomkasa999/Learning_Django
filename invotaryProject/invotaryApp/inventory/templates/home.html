@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="{% static 'inventory/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>Inventory Dashboard</h1>
+                <p class="subtitle">Manage and track all your products in one place</p>
+            </div>
+            <div>
+                  <li><a href="{% url 'create_item' %}" class="btn btn-primary btn-lg">Add Item</a></li>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card">
+            <div class="table-card-header">
+                <h2>All Products</h2>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search by name, SKU, or supplier..." oninput="filterTable()">
+                </div>
+            </div>
+
+            {% if items %}
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>SKU</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Supplier</th>
+                        <th style="text-align:right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    {% url 'view_item' item.item_id as view_url %}
+                    <tr class="clickable-row" onclick="window.location='{{ view_url }}'">
+                        <td><span class="badge badge-blue">#{{ item.item_id }}</span></td>
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td>{{ item.sku }}</td>
+                        <td>${{ item.price|floatformat:2 }}</td>
+                        <td>
+                            {% if item.quantity < 20 %}
+                                <span class="badge badge-red">{{ item.quantity }}</span>
+                            {% elif item.quantity < 50 %}
+                                <span class="badge badge-orange">{{ item.quantity }}</span>
+                            {% else %}
+                                <span class="badge badge-green">{{ item.quantity }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.supplier }}</td>
+                        <td>
+                            <div class="row-actions">
+                                <a href="{% url 'update_item' item.item_id %}" class="btn btn-outline btn-sm" onclick="event.stopPropagation()">Edit</a>
+                                <a href="{% url 'delete_item' item.item_id %}" class="btn btn-danger btn-sm" onclick="event.stopPropagation()">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <p>No products in inventory yet</p>
+                <a href="{% url 'create_item' %}" class="btn btn-primary">Add Your First Item</a>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <script src="{% static 'inventory/js/main.js' %}"></script>
+</body>
+</html>

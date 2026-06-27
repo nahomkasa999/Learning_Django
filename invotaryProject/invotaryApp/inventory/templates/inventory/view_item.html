@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Item - {{ item.name }}</title>
+    <link rel="stylesheet" href="{% static 'inventory/css/style.css' %}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="navbar-brand">InventoryPro</a>
+        <ul class="navbar-nav">
+            <li><a href="{% url 'home' %}">Dashboard</a></li>
+            <li><a href="{% url 'create_item' %}" class="btn btn-primary btn-sm">Add Item</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>{{ item.name }}</h1>
+                <p class="subtitle">Product Details &mdash; SKU: {{ item.sku }}</p>
+            </div>
+            <a href="{% url 'home' %}" class="btn btn-outline">Back to Dashboard</a>
+        </div>
+
+        <!-- Detail Card -->
+        <div class="detail-card">
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="label">Product Name</div>
+                    <div class="value">{{ item.name }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">SKU</div>
+                    <div class="value">{{ item.sku }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">Price</div>
+                    <div class="value">${{ item.price|floatformat:2 }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">Quantity in Stock</div>
+                    <div class="value">
+                        {% if item.quantity < 20 %}
+                            <span class="badge badge-red">{{ item.quantity }} units</span>
+                        {% elif item.quantity < 50 %}
+                            <span class="badge badge-orange">{{ item.quantity }} units</span>
+                        {% else %}
+                            <span class="badge badge-green">{{ item.quantity }} units</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="detail-item" style="grid-column: 1 / -1;">
+                    <div class="label">Supplier</div>
+                    <div class="value">{{ item.supplier }}</div>
+                </div>
+            </div>
+
+            <div class="detail-actions">
+                <a href="{% url 'update_item' item.item_id %}" class="btn btn-primary">Edit Item</a>
+                <a href="{% url 'delete_item' item.item_id %}" class="btn btn-danger">Delete Item</a>
+                <a href="{% url 'home' %}" class="btn btn-outline">Cancel</a>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
