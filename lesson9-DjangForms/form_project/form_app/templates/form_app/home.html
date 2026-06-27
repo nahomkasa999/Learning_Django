@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <p>We're glad you're here. Get in touch with us through our contact page.</p>
+        <form action="{% url 'contact' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Contact Us</button>
+        </form>
+    </div>
+</body>
+</html>

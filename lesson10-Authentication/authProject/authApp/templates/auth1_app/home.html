@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="home-card">
+        <h2>Welcome Home, {{ user.username }}!</h2>
+        <p>You are logged in as <strong>{{ user.username }}</strong>.</p>
+        <div class="home-actions">
+            <a href="{% url 'protected' %}" class="btn btn-primary">View Protected Page</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
